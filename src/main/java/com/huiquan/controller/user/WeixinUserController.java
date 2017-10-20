@@ -44,9 +44,10 @@ public class WeixinUserController extends BaseController {
 		result.put("param", param);
 		WeixinUser user = new WeixinUser();
 		if(null != param && null != param.get("code") && null != param.get("nickName")){
-			BeanUtil.copyProperties(user, param,"nickName","avatarUrl","gender","city","province","country","maxMemoryNum");
+			BeanUtil.copyProperties(user, param,"nickName","avatarUrl","gender","city","province","country");
 			user.setTsp(new Date());
-			weixinUserService.insert(user);
+			String code = param.get("code").toString();
+			user = weixinUserService.loginWeixinUser(user, code);
 		}
 		return success(user);
 	}

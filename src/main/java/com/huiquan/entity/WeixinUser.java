@@ -29,6 +29,10 @@ public class WeixinUser extends Model<WeixinUser> {
      * 用户名称
      */
 	private String nickName;
+	/**
+	 * openId
+	 */
+	private String openid;
     /**
      * 用户头像
      */
@@ -73,6 +77,14 @@ public class WeixinUser extends Model<WeixinUser> {
 
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
+	}
+	
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 
 	public String getAvatarUrl() {

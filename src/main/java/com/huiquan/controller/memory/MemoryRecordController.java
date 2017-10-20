@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.feilong.core.Validator;
 import com.feilong.core.bean.BeanUtil;
+import com.huiquan.controller.base.BaseController;
 import com.huiquan.dao.StudentMapper;
 import com.huiquan.entity.MemoryRecord;
+import com.huiquan.result.ResultModel;
 import com.huiquan.service.IMemoryRecordService;
 import com.huiquan.service.IStudentService;
 
@@ -30,21 +34,18 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("memory")
-public class MemoryRecordController {
+public class MemoryRecordController extends BaseController{
 	
 	@Autowired IMemoryRecordService memoryRecordService;
 	
 	@PostMapping("/insertMemory")
-	public Map<String,Object> insertStudent(@RequestBody Map<String,Object> param){
-		Map<String,Object> result = new HashMap<String, Object>();
-		result.put("param", param);
-		if(null != param && null != param.get("userId") && null != param.get("isSuccess")){
-			MemoryRecord memoryRecord = new MemoryRecord();
-			BeanUtil.copyProperties(memoryRecord, param,"userId","isSuccess","randomNum","inputNum");
+	public ResultModel insertStudent(@RequestBody String JsonString){
+		MemoryRecord memoryRecord = JSON.parseObject(JsonString, MemoryRecord.class);
+		if(Validator.isNotNullOrEmpty(memoryRecord)){
 			memoryRecord.setTsp(new Date());
 			memoryRecordService.insert(memoryRecord);
 		}
-		return result;
+		return success(memoryRecord);
 	}
 	
 }
